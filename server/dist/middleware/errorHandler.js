@@ -1,0 +1,8 @@
+import { CustomError } from '../errors/custom-error.js';
+const errorHandlerMiddleware = (err, req, res, next) => {
+    if (err instanceof CustomError) {
+        return res.status(err.statusCode).json({ msg: err.message });
+    }
+    return res.status(500).json({ msg: "Something went wrong!, Please try again" });
+};
+export default errorHandlerMiddleware;
