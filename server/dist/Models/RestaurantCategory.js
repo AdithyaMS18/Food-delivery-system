@@ -1,9 +1,10 @@
-import sequelize from "../DB/db.js ";
+import sequelize from "../DB/db.js";
 import { DataTypes } from "sequelize";
 const RestaurantCategory = sequelize.define('RestaurantCategory', {
     Rid: {
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true
     },
     Rname: {
         type: DataTypes.ENUM,

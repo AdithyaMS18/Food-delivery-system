@@ -1,10 +1,11 @@
-import sequelize from "../DB/db.js ";
-import { Op, Model, DataTypes } from "sequelize";
+import sequelize from "../DB/db.js";
+import { DataTypes } from "sequelize";
 import useBcrypt from "sequelize-bcrypt";
 const User = sequelize.define('User', {
     Uid: {
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey:true
     },
     Uname: {
         type: DataTypes.STRING,
@@ -30,7 +31,7 @@ const User = sequelize.define('User', {
     }
 }, {});
 useBcrypt(User, {
-    field: 'password',
+    field: 'Upassword',
     rounds: 12,
     compare: 'authenticate',
 });

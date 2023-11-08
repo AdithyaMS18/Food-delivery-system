@@ -1,4 +1,4 @@
-import sequelize from "db";
+import sequelize from "../DB/db";
 import {  Op, Model, DataTypes } from "sequelize";
 import useBcrypt from "sequelize-bcrypt"
 
@@ -37,7 +37,7 @@ const User = sequelize.define('User', {
   
 
   useBcrypt(User, {
-    field: 'password', 
+    field: 'Upassword', 
     rounds: 12, 
     compare: 'authenticate',
   });

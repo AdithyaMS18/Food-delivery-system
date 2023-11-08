@@ -13,11 +13,13 @@ import sequelize from './DB/db.js';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import restaurantRouter from './routes/restaurantRoutes.js';
+import { signUp } from './controllers/userController.js';
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 app.use(bodyParser.json({ limit: "30mb" }));
 app.use(cors());
 app.use('/api/v1/restaurant', restaurantRouter);
+app.post('/api/v1/signup', signUp);
 function connectToDatabase() {
     return __awaiter(this, void 0, void 0, function* () {
         try {

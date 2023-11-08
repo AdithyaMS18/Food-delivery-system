@@ -1,4 +1,4 @@
-import sequelize from "../DB/db.js ";
+import sequelize from "../DB/db.js";
 import { DataTypes } from "sequelize";
 import User from "./User.js";
 import RestaurantCategory from "./RestaurantCategory.js";

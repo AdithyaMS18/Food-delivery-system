@@ -1,4 +1,4 @@
-import { CustomError } from '../errors/custom-error.js';
+import { CustomError } from '../errors/customError';
 const errorHandlerMiddleware = (err, req, res, next) => {
     if (err instanceof CustomError) {
         return res.status(err.statusCode).json({ msg: err.message });

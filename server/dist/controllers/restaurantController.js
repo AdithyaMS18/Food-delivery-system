@@ -15,15 +15,13 @@ export const registerRestaurant = (req, res, next) => __awaiter(void 0, void 0, 
     if (!name || !description || !location || !cid) {
         return next(createCustomError("Please provide all values", 400));
     }
-    const restaurant = yield Restaurant.create({ Rname: name, Rlocation: location, Rdescription: description, Rphoto: profilePhoto, Uid: 1, Cid: cid });
-    res.status(201).json(restaurant);
+    try {
+        const restaurant = yield Restaurant.create({ Rname: name, Rlocation: location, Rdescription: description, Rphoto: profilePhoto, Uid: 1, Cid: cid });
+        res.status(201).json(restaurant);
+    }
+    catch (error) {
+        next(error);
+    }
 });
 export const loginRestaurant = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, description, location, cid, profilePhoto } = req.body;
-    // const {userId} = req.params
-    if (!name || !description || !location || !cid) {
-        return next(createCustomError("Please provide all values", 400));
-    }
-    const restaurant = yield Restaurant.create({ Rname: name, Rlocation: location, Rdescription: description, Rphoto: profilePhoto, Uid: 1, Cid: cid });
-    res.status(201).json(restaurant);
 });
