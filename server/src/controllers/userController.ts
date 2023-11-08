@@ -59,13 +59,13 @@ export const login = async(req:Request, res:Response, next:NextFunction)=>{
         }
 
         const isPasswordCorrect= await bcrypt.compare(password, user.dataValues.Upassword);
-        
+
         if(!isPasswordCorrect){
             return next(createCustomError("Incorrect password", 400));
         }else{
             const token = createJWT(user);
 
-            // Send the required data (password is not required) to the frontend
+          
             res.status(201).json({
                 user,
                 token
