@@ -32,6 +32,7 @@ const initialState:InitialState ={
 }
 
 type AppContextValue = {
+    user: UserData|null ;
     signUp: (currentUser: {
         name:string;
         email:string;
@@ -41,16 +42,16 @@ type AppContextValue = {
         email:string;
         password:string;
     }) => void;
+
 }
 
 const AppContext = createContext<AppContextValue | undefined>(undefined);
 
 type ChildrenType={
-    children?: ReactElement | ReactElement[] | undefined
+    children?: ReactElement | ReactElement[] |ReactNode| undefined
 }
 const AppProvider = ({ children }:ChildrenType): ReactElement => {
     const [state, dispatch] = useReducer(reducer, initialState);
-
     const addUserToLocalStorage = ({ user, token }: User): void => {
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('token', token);
@@ -75,9 +76,13 @@ const AppProvider = ({ children }:ChildrenType): ReactElement => {
     }) => {
         dispatch({ type: "BEGIN" })
         try {
-            const response = await authFetch.post('/auth/signup', currentUser);
+            const response = await authFetch.post('/api/v1/user/signup', currentUser);
 
-            const { user, token } = response.data;
+            let { user, token } = response.data;
+            user = {
+                name:user.Uname,
+                _id:user.Uid
+            }
         
             dispatch({
                 type: "REGISTER_USER_SUCCESS",
@@ -87,6 +92,7 @@ const AppProvider = ({ children }:ChildrenType): ReactElement => {
             // displayAlert("Signed up successfully!", "success")
         } catch (error) {
             console.log(error)
+            window.alert(error)
            
         } 
     }
@@ -99,9 +105,13 @@ const AppProvider = ({ children }:ChildrenType): ReactElement => {
         dispatch({ type: "BEGIN" })
         try {
       
-            const response = await authFetch.post('/auth/login', currentUser)
+            const response = await authFetch.post('/api/v1/user/login', currentUser)
        
-            const { user, token } = response?.data;
+            let { user, token } = response?.data;
+            user = {
+                name:user.Uname,
+                _id:user.Uid
+            }
 
             dispatch({
                 type: "LOGIN_USER_SUCCESS",
@@ -110,6 +120,7 @@ const AppProvider = ({ children }:ChildrenType): ReactElement => {
             addUserToLocalStorage({ user, token })      
         } catch (error) {
             console.log(error)
+            window.alert(error)
          
         }
        
@@ -123,7 +134,7 @@ const AppProvider = ({ children }:ChildrenType): ReactElement => {
 };
 
 const useAppContext = () => {
-    return useContext(AppContext)
+    return useContext(AppContext) as AppContextValue
 }
 
 export { AppProvider, initialState, useAppContext }

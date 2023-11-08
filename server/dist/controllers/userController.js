@@ -66,7 +66,6 @@ const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* ()
         }
         else {
             const token = createJWT(user);
-            // Send the required data (password is not required) to the frontend
             res.status(201).json({
                 user,
                 token
