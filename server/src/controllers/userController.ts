@@ -1,6 +1,7 @@
 import { createCustomError } from "../errors/customError";
 import User from "../Models/User"
 import jwt, { Secret } from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
 
 import { Request, Response, NextFunction } from 'express';
 
@@ -18,7 +19,7 @@ export const signUp = async (req: Request, res: Response, next: NextFunction) =>
         }
 
         // Check whether the user already exists, and if the email is already registered, throw an error
-        const userExists = await User.findOne({ where: { email: 'john.doe@example.com' } });
+        const userExists = await User.findOne({ where: { Uemail: email } });
         if (userExists) {
             return next(createCustomError("User already exists", 400));
         }
@@ -42,9 +43,38 @@ export const signUp = async (req: Request, res: Response, next: NextFunction) =>
     }
 }
 
-/*CREATING A NEW USER USING SEQUELIZE
-const jane = User.build({ Uname: "Jane", Uemail: "ani@gmail.com", Upassword:"ani", Uaddress:"karanth compound" });
-  console.log(jane)
-  await jane.save();
+export const login = async(req:Request, res:Response, next:NextFunction)=>{
+    try {
+         // Extract required details from the body of the Request
+         const { email, password }: { email: string, password: string } = req.body;
 
-*/
+         // Check whether the user has provided all the values and if all values are not provided, throw an error
+         if ( !email || !password) {
+             return next(createCustomError("Please provide all values", 400));
+         }
+
+         const user = await User.findOne({ where: { Uemail: email } });
+        if (!user) {
+            return next(createCustomError("User does not exists", 400));
+        }
+
+        const isPasswordCorrect= await bcrypt.compare(password, user.dataValues.Upassword);
+        
+        if(!isPasswordCorrect){
+            return next(createCustomError("Incorrect password", 400));
+        }else{
+            const token = createJWT(user);
+
+            // Send the required data (password is not required) to the frontend
+            res.status(201).json({
+                user,
+                token
+            });
+        }
+
+
+
+    } catch (error) {
+        next(error)
+    }
+}

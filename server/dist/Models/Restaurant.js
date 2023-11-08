@@ -1,47 +1,53 @@
-import sequelize from "../DB/db.js";
-import { DataTypes } from "sequelize";
-import User from "./User.js";
-import RestaurantCategory from "./RestaurantCategory.js";
-const Restaurant = sequelize.define('Restaurant', {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const db_1 = __importDefault(require("../DB/db"));
+const sequelize_1 = require("sequelize");
+const User_1 = __importDefault(require("./User"));
+const RestaurantCategory_1 = __importDefault(require("./RestaurantCategory"));
+const Restaurant = db_1.default.define('Restaurant', {
     Rid: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4
+        type: sequelize_1.DataTypes.UUID,
+        defaultValue: sequelize_1.DataTypes.UUIDV4,
+        primaryKey: true
     },
     Rname: {
-        type: DataTypes.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
     Rlocation: {
-        type: DataTypes.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
     },
     Rdescription: {
-        type: DataTypes.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
     rating: {
-        type: DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.INTEGER,
     },
     Rphoto: {
-        type: DataTypes.STRING(1200)
+        type: sequelize_1.DataTypes.STRING(1200)
     },
     Uid: {
-        type: DataTypes.UUID,
+        type: sequelize_1.DataTypes.UUID,
         references: {
-            model: User,
+            model: User_1.default,
             key: 'Uid'
         }
     },
     Rtype: {
-        type: DataTypes.ENUM,
+        type: sequelize_1.DataTypes.ENUM,
         values: ['VEG', 'NONVEG']
     },
     Cid: {
-        type: DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.INTEGER,
         references: {
-            model: RestaurantCategory,
+            model: RestaurantCategory_1.default,
             key: 'CRid'
         }
     }
 }, {});
-export default Restaurant;
+exports.default = Restaurant;

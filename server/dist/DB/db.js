@@ -1,6 +1,8 @@
-import { Sequelize } from 'sequelize';
-const sequelize = new Sequelize(process.env.dbname, process.env.dbuser, process.env.dbpassword, {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const sequelize_1 = require("sequelize");
+const sequelize = new sequelize_1.Sequelize(process.env.dbname, process.env.dbuser, process.env.dbpassword, {
     host: 'localhost',
     dialect: 'mysql'
 });
-export default sequelize;
+exports.default = sequelize;
